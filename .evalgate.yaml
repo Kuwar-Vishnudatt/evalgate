@@ -1,0 +1,5 @@
+min_faithfulness: 0.75
+min_answer_relevancy: 0.1
+min_context_precision: 0.7
+min_context_recall: 0.7
+max_regression: 0.1

@@ -1,0 +1,7 @@
+[
+  {"id": "c1", "question": "How long is the warranty?", "ground_truth_answer": "Two years from purchase, covering manufacturing defects.", "relevant_context_ids": ["warranty"]},
+  {"id": "c2", "question": "What is the return policy?", "ground_truth_answer": "Returns accepted within thirty days for a full refund.", "relevant_context_ids": ["returns"]},
+  {"id": "c3", "question": "How long does shipping take?", "ground_truth_answer": "Five to seven business days in the continental US.", "relevant_context_ids": ["shipping"]},
+  {"id": "c4", "question": "When is customer support available?", "ground_truth_answer": "Monday through Friday, 9am-6pm Eastern.", "relevant_context_ids": ["support"]},
+  {"id": "c5", "question": "What does pricing include?", "ground_truth_answer": "A one-time fifty dollar setup fee plus twenty dollars monthly.", "relevant_context_ids": ["pricing"]}
+]
