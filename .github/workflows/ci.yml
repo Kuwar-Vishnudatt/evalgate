@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - name: go test
+        run: go test ./... -race -count=1
+
+  eval-gate-self-check:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - name: build evalgate
+        run: go build -o bin/evalgate ./cmd/evalgate
+      - name: run the good example target (baseline)
+        run: ./bin/evalgate run -cases testdata/golden.json -target good -out /tmp/good.json
+      - name: run the degraded example target (candidate)
+        run: ./bin/evalgate run -cases testdata/golden.json -target degraded -out /tmp/degraded.json
+      - name: expect the good target to PASS the gate
+        run: ./bin/evalgate check -candidate /tmp/good.json -config .evalgate.yaml
+      - name: expect the degraded target to FAIL the gate (proves it actually blocks)
+        run: |
+          if ./bin/evalgate check -candidate /tmp/degraded.json -baseline /tmp/good.json -config .evalgate.yaml; then
+            echo "::error::expected the degraded target to be blocked, but the gate passed it"
+            exit 1
+          fi
+          echo "gate correctly blocked the degraded target"
